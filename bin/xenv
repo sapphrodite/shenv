@@ -1,0 +1,6 @@
+#!/bin/sh
+
+termcolors x ${HOME_ETC}/termcolors.png > /tmp/xcolors_tmp
+xrdb ${HOME_ETC}/xresources
+xrdb -merge /tmp/xcolors_tmp
+xset b off

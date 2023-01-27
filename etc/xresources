@@ -1,0 +1,6 @@
+*font: -*-terminus-*bold*-*-*-16-*-*-*-*-*-*-*
+*background: #000000
+*foreground: #ffffff
+
+URxvt.perl-ext-common: ...,font-size
+URxvt.scrollBar:                false

@@ -1,0 +1,66 @@
+#!/bin/sh
+
+#------------------------------------------------------------------------------
+
+batpct() {
+	FULL=$(cat /sys/class/power_supply/BAT0/energy_full)
+	NOW=$(cat /sys/class/power_supply/BAT0/energy_now)
+	echo $(($((100 * ${NOW})) / ${FULL}))
+}
+
+# this can't use $HOME because of sed string formatting. unless i can fix that
+prettywd() {
+    printf "%s" $(pwd | sed -e s/"\/home\/"$(whoami)/~/)
+}
+
+# Color codes are annoyingly shell-specific... this is for bash/ksh.
+# bash still has problems using these in the prompt bcz it's dogshit
+setcolor() {
+    printf '\033[%sm' $1
+}
+
+colorify() {
+    printf "$(setcolor %s)%s$(setcolor)" $@
+}
+
+BAT_HIGHLVL=50
+BAT_MEDLVL=20
+batpct_clr() {
+    if [ $(batpct) -gt $BAT_HIGHLVL ]; then
+        printf ${LIGREEN}
+    elif [ $(batpct) -gt $BAT_MEDLVL ]; then
+        printf ${LIYELLOW}
+    else
+        printf ${LIRED}
+    fi
+}
+
+export RED='0;31' GREEN='0;32' YELLOW='0;33' BLUE='0;34' PURPLE='0;35' CYAN='0;36'
+export LIRED='1;31' LIGREEN='1;32' LIYELLOW='1;33' LIBLUE='1;34' LIPURPLE='1;35' LICYAN='1;36'
+export PATH="${PATH}:"$HOME"/bin/"
+export ENV="~/bin/shenv"
+
+#------------------------------------------------------------------------------
+
+XDG_REDIR_BASE="$HOME"
+export HOME_ETC="${XDG_REDIR_BASE}/etc"
+export HOME_CACHE="${XDG_REDIR_BASE}/cache"
+export HOME_DATA="${XDG_REDIR_BASE}/share"
+export XDG_CACHE_HOME="${HOME_CACHE}"
+export XDG_CONFIG_HOME="${HOME_ETC}"
+export XDG_DATA_HOME="${HOME_DATA}"
+export XDG_DOWNLOADS_DIR="~/"
+
+export LESSHISTFILE="-"
+export GIT_CONFIG_GLOBAL="${HOME_ETC}/config/git"
+export ICEAUTHORITY="${HOME_ETC}/cookie/ICEauthority"
+export GNUPGHOME="${HOME_ETC}/gnupg"
+export PULSE_COOKIE="${HOME_ETC}/cookie/pulse"
+export GST_REGISTRY="${HOME_CACHE}/gstreamer-1.0/registry.x86_64.bin"
+export XAUTHORITY="${HOME_ETC}/cookie/xauthority"
+export HTOPRC="/dev/null"
+
+#------------------------------------------------------------------------------
+
+export SHENV="true"
+. shrc

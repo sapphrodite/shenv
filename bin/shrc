@@ -1,0 +1,22 @@
+#!/bin/sh
+
+ps1_status() {
+    TIME="$(date +%H:%M)"
+    BATPCT=$(colorify $(batpct_clr) $(batpct))
+    printf "[%s  %s%%]  " $TIME $BATPCT
+}
+
+gen_ps1() {
+    printf "%s%s" "$(ps1_status)$(colorify ${LIPURPLE} $(whoami))@$(colorify ${LIRED} $(hostname)):$(colorify ${LIBLUE} $(prettywd))$ "
+}
+
+fontsize() {
+    printf "\033]710;-*-terminus-bold-*-*--$1-*-*-*-*-*-*-*\033\\"
+}
+
+PS1='$(gen_ps1)'
+
+alias scrshot="scrot -s -e 'xclip -selection clipboard -t image/png -i $f && rm $f'"
+alias ls='ls --color=auto --width=100'
+alias ranger='ranger -r ${HOME_ETC}/config/'
+export GCC_COLORS='error='$LIRED':warning='$LIYELLOW':note='$LICYAN':caret='$LIGREEN':locus=01:quote=01'
