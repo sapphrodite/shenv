@@ -1,0 +1,15 @@
+#!/bin/sh
+
+batpct() {
+	FULL=$(cat /sys/class/power_supply/BAT0/energy_full)
+	NOW=$(cat /sys/class/power_supply/BAT0/energy_now)
+	echo $(($((100 * ${NOW})) / ${FULL}))
+}
+
+alias scrshot="scrot -s -e 'xclip -selection clipboard -t image/png -i $f && rm $f'"
+alias ls='ls --color=auto --width=100'
+alias grep='grep --color=auto'
+alias ranger='ranger -r ${HOME_ETC}/config/'
+export GCC_COLORS='error='$LIRED':warning='$LIYELLOW':note='$LICYAN':caret='$LIGREEN':locus=01:quote=01'
+
+export WM="dwm"
