@@ -1,3 +1,3 @@
-. $HOME/bin/shenv
+. $HOME/bin/shrc
 xenv
 ${WM}
